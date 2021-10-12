@@ -1,0 +1,18 @@
+import java.util.Scanner;
+public interface user {
+    Scanner sc=new Scanner(System.in);
+    public default void adduser(){
+        System.out.println("enter book name");
+        String name=sc. next();
+        String userid= sc.next();
+        String password=sc.next();
+        String sql="insert into user(?,?,?,?)";
+        String[ ]params={userid,name,password};
+        ModelAction modelAction=new ModelAction();
+        modelAction.connect();
+        modelAction.addToTable(sql);
+
+
+
+    }
+}
