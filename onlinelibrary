@@ -1,0 +1,122 @@
+import com.mysql.cj.xdevapi.PreparableStatement;
+
+import java.io.Writer;
+import java.sql.*;
+import java.util.Scanner;
+
+public class library{
+
+
+    static Connection con;
+    private static String BookName;
+    private static String Bookid;
+    private static int Prize;
+    private  static  String Numberofcopy;
+    private  static String Writer;
+    private  static String Yearofpublish;
+
+
+    public static void main(String[] args) {
+        try {
+            String addr = "jdbc:mysql://localhost:3306/library";
+            String username = "root";
+            String password = "root";
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection(addr, username, password);
+            System.out.println("connection is established");
+        } catch (Exception e) {
+
+        }
+        while (true) {
+            System.out.println("Enter option for operation of database");
+            System.out.println("1. Insert\n2.Delete\n3.Display\n4.Update");
+            Scanner sc = new Scanner(System.in);
+            int choice = sc.nextInt();
+            switch (choice) {
+
+                case 1:
+                    try {
+                        //Scanner sc = new Scanner(System.in);
+                        System.out.println("Enter Book ID");
+                        String usn = sc.next();
+                        System.out.println("Enter Book Name");
+                        String name = sc.next();
+                        System.out.println("Enter Prize");
+                        String br = sc.next();
+                        System.out.println("Enter Number of copies");
+                        String place = sc.next();
+                        System.out.println("Enter Writer");
+                        int age = sc.nextInt();
+                        System.out.println("Enter year of publish");
+                        String sql = "insert into student values(?,?,?,?,?)";
+                        PreparedStatement ps = con.prepareStatement(sql);
+                        ps.setString(1,Bookid);
+                        ps.setString(2,BookName);
+                        ps.setString(3, String.valueOf(Prize));
+                        ps.setInt(4, Integer.parseInt(Numberofcopy));
+                        ps.setString(5, Writer);
+                        ps.setString(6,Yearofpublish);
+                        boolean status = ps.execute();
+                        System.out.println("Succesful");
+
+                    } catch (SQLException e) {
+                        System.out.println(e);
+
+                    }
+                    break;
+
+                case 2:
+                    try{
+                        System.out.println("Enter the usn you want to delete");
+                        String usn = sc.next();
+                        String st = "delete from student where usn = ?";
+                        PreparedStatement ps = con.prepareStatement(st);
+                        ps.setString(1,Bookid);
+                        boolean status = ps.execute();
+
+                        System.out.println("Deletion successful");
+                    }
+                    catch (SQLException e){
+                        System.out.println(e);
+                    }
+                    break;
+                case 3:
+                    try{
+                        System.out.println("Enter the usn you want to find");
+                        String usn = sc.next();
+                        String st = "select * from student where Bookid = ?";
+                        PreparedStatement ps = con.prepareStatement(st);
+                        ps.setString(1,Bookid);
+                        ResultSet rs = ps.executeQuery();
+                        String Bookid=" ",Bookname=" ",prize= " ";
+                        int age;
+                        if (rs.next())
+                            //System.out.println("Deletion successful");
+                            Bookid =  rs.getString("Bookid");
+                        BookName = rs.getString("BookName");
+                        Prize = rs.getInt("Prize");
+                        Numberofcopy = rs.getString("Number of copy");
+                        Writer = rs.getString("Writer");
+                        Yearofpublish = rs.getString("Year of Publis");
+                        System.out.println("Bookid"+ "BookName" +"Prize" +"Number of copy");
+
+
+
+                    }
+                    catch (SQLException e){
+                        System.out.println(e);
+
+                    }
+                    break;
+                case 4: System.exit(0);
+                    break;
+                default:System.out.println("Wrong input");
+                    break;
+
+
+
+            }
+        }
+
+    }
+}
